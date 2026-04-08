@@ -8,5 +8,3 @@ To make the project more nuanced, we will want the smart server to also spit out
 The user, in the beginning can choose levels of difficulty. The word length will be correlated with the difficulty. For example, if the level is easy, than the word will be < 7 letters.
 
 Finally, in order to help the user, once we know that there is only 1 guess available, we can prompt the server to ask "would you like a hint?"
-
-

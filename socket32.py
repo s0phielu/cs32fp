@@ -1,4 +1,4 @@
-### chap05/socket32.py
+
 import socket
 from typing import Tuple
 
