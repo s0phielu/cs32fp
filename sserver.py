@@ -2,7 +2,7 @@ import socket
 import random
 
 HOST = "127.0.0.1"
-PORT =  65432
+PORT = 5555
 
 WORDS = {
     "easy": ["planet", "garden", "silver", "window"],
@@ -11,8 +11,8 @@ WORDS = {
 }
 
 
-def choose_word(level): # returns a random word from the list of words for the given level
-    return random.choice(WORDS[level]) # random.choice() is a function that returns a random element from a non-empty sequence
+def choose_word(level): # function to select a random word based on difficulty level
+    return random.choice(WORDS[level])
 
 
 def make_hidden_word(word, guessed_letters):
@@ -52,13 +52,16 @@ if level not in WORDS:
 else:
     secret_word = choose_word(level)
     guessed_letters = []
-    guess_count = 0
+    wrong_guesses = 0
+    max_wrong_guesses = 6
+    wrong_streak = 0
     hint_used = False
 
     client.send(f"You picked {level} mode.\n".encode())
     client.send(f"Word: {make_hidden_word(secret_word, guessed_letters)}\n".encode())
 
     while True:
+        client.send(f"Wrong guesses: {wrong_guesses}/{max_wrong_guesses}\n".encode())
         client.send("Guess one letter:\n".encode())
         guess = client.recv(1024).decode().strip().lower()
 
@@ -68,10 +71,18 @@ else:
 
         if guess not in guessed_letters:
             guessed_letters.append(guess)
-            guess_count += 1
 
-        if guess_count < 2 and not hint_used:
-            client.send("Do you want a hint? (yes/no)\n".encode())
+            if guess in secret_word:
+                client.send("Correct guess!\n".encode())
+                wrong_streak = 0  # ✅ reset streak
+            else:
+                client.send("That letter is not in the word.\n".encode())
+                wrong_guesses += 1
+                wrong_streak += 1  # ✅ increase streak
+
+        # hint after 3 wrong guesses in a row
+        if wrong_streak == 3 and not hint_used:
+            client.send("You've had 3 incorrect guesses. Want a hint? (yes/no)\n".encode())
             answer = client.recv(1024).decode().strip().lower()
 
             if answer == "yes":
@@ -81,11 +92,18 @@ else:
                     client.send(f"Hint: the letter '{hint_letter}' is in the word!\n".encode())
                 hint_used = True
 
+            wrong_streak = 0  # reset after offering hint
+
         current_word = make_hidden_word(secret_word, guessed_letters)
         client.send(f"Word: {current_word}\n".encode())
 
         if current_word == secret_word:
             client.send("You won!\n".encode())
+            break
+
+        if wrong_guesses == max_wrong_guesses:
+            client.send("The man has been hanged!\n".encode())
+            client.send(f"The word was: {secret_word}\n".encode())
             break
 
     client.close()
