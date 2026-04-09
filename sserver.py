@@ -12,27 +12,27 @@ WORDS = {
 
 
 def choose_word(level): # function to select a random word based on difficulty level
-    return random.choice(WORDS[level])
+    return random.choice(WORDS[level]) # select a random word from the list corresponding to the chosen level
 
 
-def make_hidden_word(word, guessed_letters):
-    hidden = ""
+def make_hidden_word(word, guessed_letters): # function to create a hidden version of the word, showing guessed letters and hiding others
+    hidden = "" # initialize an empty string to build the hidden word
     for letter in word:
         if letter in guessed_letters:
             hidden += letter
         else:
             hidden += "_"
-    return hidden
+    return hidden # return the constructed hidden word
 
 
-def give_hint(word, guessed_letters):
+def give_hint(word, guessed_letters): # function to provide a hint by selecting a random unguessed letter from the word
     remaining = [letter for letter in word if letter not in guessed_letters]
     if remaining:
         return random.choice(remaining)
-    return None
+    return None # return None if there are no unguessed letters left
 
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create a TCP/IP socket
 server.bind((HOST, PORT))
 server.listen()
 
