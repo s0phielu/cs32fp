@@ -1,10 +1,8 @@
-from socket32 import create_new_socket
-
-HOST = '127.0.0.1'
-PORT = 65432
-
 import socket
 import random
+
+HOST = "127.0.0.1"
+PORT =  65432
 
 WORDS = {
     "easy": ["planet", "garden", "silver", "window"],
@@ -13,8 +11,8 @@ WORDS = {
 }
 
 
-def choose_word(level):
-    return random.choice(WORDS[level])
+def choose_word(level): # returns a random word from the list of words for the given level
+    return random.choice(WORDS[level]) # random.choice() is a function that returns a random element from a non-empty sequence
 
 
 def make_hidden_word(word, guessed_letters):
@@ -28,8 +26,7 @@ def make_hidden_word(word, guessed_letters):
 
 
 def give_hint(word, guessed_letters):
-    # reveal one random letter not guessed yet
-    remaining = [l for l in word if l not in guessed_letters]
+    remaining = [letter for letter in word if letter not in guessed_letters]
     if remaining:
         return random.choice(remaining)
     return None
@@ -73,7 +70,6 @@ else:
             guessed_letters.append(guess)
             guess_count += 1
 
-        # hint prompt if less than 2 guesses and hint not used
         if guess_count < 2 and not hint_used:
             client.send("Do you want a hint? (yes/no)\n".encode())
             answer = client.recv(1024).decode().strip().lower()
@@ -93,3 +89,4 @@ else:
             break
 
     client.close()
+    server.close()

@@ -1,12 +1,14 @@
-from socket32 import create_new_socket
+import socket
 
-HOST = '127.0.0.1'  # The server's hostname or IP address
-PORT = 65432        # The port used by the server
-client = create_new_socket()
+HOST = "127.0.0.1"
+PORT = 65432
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
 
 while True:
     message = client.recv(1024).decode()
+
     if not message:
         break
 
