@@ -2,13 +2,13 @@ import socket
 import random
 
 HOST = "127.0.0.1"
-PORT = 65432
+PORT =  65432
 
 WORDS = {
     "easy": ["planet", "garden", "silver", "window"],
     "medium": ["computer", "painting", "elephant", "notebook"],
     "hard": ["algorithm", "networking", "complexity", "programming"]
-}
+} # A dictionary of word lists for each difficulty level
 
 
 def choose_word(level):
