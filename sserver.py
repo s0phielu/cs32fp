@@ -32,7 +32,7 @@ def give_hint(word, guessed_letters): # function to provide a hint by selecting 
     return None # return None if there are no unguessed letters left
 
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create a TCP/IP socket
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #
 server.bind((HOST, PORT))
 server.listen()
 
@@ -74,11 +74,11 @@ else:
 
             if guess in secret_word:
                 client.send("Correct guess!\n".encode())
-                wrong_streak = 0  # ✅ reset streak
+                wrong_streak = 0
             else:
                 client.send("That letter is not in the word.\n".encode())
                 wrong_guesses += 1
-                wrong_streak += 1  # ✅ increase streak
+                wrong_streak += 1  
 
         # hint after 3 wrong guesses in a row
         if wrong_streak == 3 and not hint_used:
