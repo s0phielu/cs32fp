@@ -52,8 +52,6 @@ if level not in WORDS:
 else:
     secret_word = choose_word(level)
     guessed_letters = []
-    wrong_guesses = 0
-    max_wrong_guesses = 6
     guess_count = 0
     hint_used = False
 
@@ -61,7 +59,6 @@ else:
     client.send(f"Word: {make_hidden_word(secret_word, guessed_letters)}\n".encode())
 
     while True:
-        client.send(f"Wrong guesses: {wrong_guesses}/{max_wrong_guesses}\n".encode())
         client.send("Guess one letter:\n".encode())
         guess = client.recv(1024).decode().strip().lower()
 
@@ -72,12 +69,6 @@ else:
         if guess not in guessed_letters:
             guessed_letters.append(guess)
             guess_count += 1
-
-            if guess not in secret_word:
-                wrong_guesses += 1
-                client.send("That letter is not in the word.\n".encode())
-            else:
-                client.send("Correct guess!\n".encode())
 
         if guess_count < 2 and not hint_used:
             client.send("Do you want a hint? (yes/no)\n".encode())
@@ -95,11 +86,6 @@ else:
 
         if current_word == secret_word:
             client.send("You won!\n".encode())
-            break
-
-        if wrong_guesses == max_wrong_guesses:
-            client.send("The man has been hanged!\n".encode())
-            client.send(f"The word was: {secret_word}\n".encode())
             break
 
     client.close()
