@@ -31,5 +31,7 @@ Two-Server Idea:
 The project uses a two-server structure. One server is responsible for storing or managing the word bank and selecting words based on difficulty. The other server handles the gameplay, such as receiving guesses, updating the board, tracking incorrect attempts, and displaying results. This setup separates the data side from the game logic side.
 
 FUTURE EDITS: Ascii Art to display hangman image 
+
+
 We used Claude AI and https://developers.openai.com/api/docs/guides/text?utm_source=chatgpt.com
 
