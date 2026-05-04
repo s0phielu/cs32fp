@@ -14,7 +14,7 @@ import os
 from openai import OpenAI
 
 # ── OpenAI client ────────────────────────────────────────────────────────────
-openai_client = OpenAI(api_key="sk-your-actual-key-here")
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 WORD_SERVER_HOST = "127.0.0.1"
 WORD_SERVER_PORT = 65432
